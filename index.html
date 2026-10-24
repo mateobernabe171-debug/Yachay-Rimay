@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yachay Rimay | Aprendemos quechua de Huánuco</title>
+<style>
+:root{--ink:#25304a;--cream:#fff8e9;--orange:#e87c35;--green:#4f8a59;--blue:#3977a8;--pink:#c64f68}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#fffaf1;color:var(--ink)}
+header{padding:28px 16px;text-align:center;color:#fff;background:linear-gradient(135deg,#215c59,#2f7d75 55%,#e9a348);border-bottom:7px solid #e9c66b}
+header h1{font-size:clamp(2rem,7vw,3.8rem);margin:0;letter-spacing:2px;text-shadow:2px 3px #234e4b}
+header p{font-size:1.05rem;margin:8px 0 0}
+.wrap{max-width:1100px;margin:auto;padding:18px}
+.intro{background:#fff;border:2px solid #f0d9a9;border-radius:18px;padding:18px;margin:16px 0;text-align:center}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:18px 0}
+nav button,.listen,.qrbtn{border:0;border-radius:999px;padding:10px 15px;font-weight:700;cursor:pointer;background:#2f7169;color:white}
+nav button:hover,.listen:hover,.qrbtn:hover{filter:brightness(.92)}
+h2{margin:28px 0 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{background:white;border:2px solid #f1dfbd;border-radius:18px;padding:16px;text-align:center;box-shadow:0 4px 12px #543b1510}
+.emoji{font-size:3.2rem;line-height:1.3}.spanish{font-size:1.25rem;font-weight:800}.quechua{font-size:1.35rem;color:#23675f;font-weight:800;margin:4px 0 12px}
+.listen{background:#e97835}.small{font-size:.88rem;color:#5e6473}
+.topic{scroll-margin-top:12px}
+.qr-area{margin-top:34px;background:#f1f7ed;border-radius:18px;padding:18px;border:2px solid #c9dfc1}
+.qr-area input{width:min(100%,620px);padding:12px;border:1px solid #a8b9aa;border-radius:10px;font-size:1rem}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:15px}
+.qr-card{background:white;border-radius:12px;padding:12px;text-align:center;border:1px solid #d7e5d0}
+.qr-card img{width:150px;height:150px;image-rendering:pixelated;max-width:100%}
+.qr-card p{font-weight:700;margin:6px}
+footer{text-align:center;padding:24px;color:#606777}
+.notice{font-size:.92rem;background:#fff1d9;border-left:5px solid #e9a348;padding:12px;border-radius:8px;text-align:left}
+@media print{nav,.listen,.qrbtn,.qr-area input,.qr-area button{display:none}.card{break-inside:avoid}body{background:white}}
+</style>
+</head>
+<body>
+<header>
+  <h1>YACHAY RIMAY</h1>
+  <p>¡Aprendemos y valoramos nuestra lengua quechua!</p>
+  <p><strong>Quechua de Huánuco · Español</strong></p>
+</header>
+<main class="wrap">
+  <section class="intro">
+    <h2>¡Aprendamos jugando!</h2>
+    <p>Elige un tema, mira la palabra en quechua y español, y presiona <strong>🔊 Escuchar</strong>.</p>
+    <p class="notice">Aviso: los términos se han transcrito del librillo proporcionado. La voz automática es solo una ayuda inicial y puede pronunciar algunas palabras de manera inexacta. Para el material definitivo, se recomienda grabar y validar la pronunciación con hablantes de quechua de Huánuco.</p>
+  </section>
+  <nav aria-label="Temas">
+    <button onclick="go('saludos')">👋 Saludos</button>
+    <button onclick="go('familia')">👨‍👩‍👧 Familia</button>
+    <button onclick="go('animales')">🐾 Animales</button>
+    <button onclick="go('cuerpo')">🧍 Cuerpo</button>
+    <button onclick="go('tuberculos')">🥔 Tubérculos</button>
+    <button onclick="go('colores')">🎨 Colores</button>
+  </nav>
+  <div id="content"></div>
+  <section class="qr-area" id="qr">
+    <h2>📱 Crea los códigos QR de tu página</h2>
+    <p>Cuando publiques esta página en internet, pega aquí su dirección pública y genera los QR. Cada QR llevará a una sección concreta de esta misma página.</p>
+    <input id="siteUrl" type="url" placeholder="Pega aquí la dirección pública, por ejemplo https://tusitio.com">
+    <button class="qrbtn" onclick="makeQRs()">Generar códigos QR</button>
+    <div class="small">Todavía no existe una dirección pública para esta página. Un QR que apunte a tu computadora no funcionará en otros celulares.</div>
+    <div class="qr-grid" id="qrGrid"></div>
+  </section>
+</main>
+<footer>Yachay Rimay · Recurso educativo en desarrollo · Huánuco, Perú</footer>
+<script>
+const topics = [
+{id:'saludos',title:'👋 Saludos y despedidas',items:[
+['Buenos días',"Allin p’unchaw",'🌞'],['Buenas tardes','Allin sukha','🌤️'],['Hasta mañana','Paq arinkama','👋'],['Hasta luego','Tupananchiskama','🤝']]},
+{id:'familia',title:'👨‍👩‍👧 Ayllu – La familia',items:[
+['Mamá','Mama','👩'],['Papá','Tayta','👨'],['Abuela','Hatun mama','👵'],['Abuelo','Hatun tayta','👴'],['Tía','Ipa','👩'],['Tío','Kaka','👨'],['Hermana','Pani','👧'],['Bebé','Wawa','👶'],['Nieto/a','Willka','👧'],['Esposo','Qusa','🧑'],['Esposa / mujer','Warmi','👩'],['Hombre','Qari','👨']]},
+{id:'animales',title:'🐾 Animales',items:[
+['Perro','Allqu','🐕'],['Gato','Misi','🐈'],['Vaca','Waka','🐄'],['Oveja','Uusha','🐑'],['Chancho','Kuchi','🐖'],['Gallina','Wallpa','🐓'],['Caballo','Kawallu','🐎'],['Cuy','Quwi','🐹'],['Zorro','Atoq','🦊'],['Cóndor','Kuntur','🦅'],['Toro','Turus','🐂'],['Burro','Asnu','🫏'],['Cabra','Chivra','🐐'],['Pato','Patu','🦆'],['Gallo','Kanka','🐓'],['Conejo','Kunuhi','🐇'],['Ratón','Ukush','🐁'],['Venado','Taruka','🦌'],['Rana',"K’ayra",'🐸']]},
+{id:'cuerpo',title:'🧍 El cuerpo humano',items:[
+['Cuerpo','Kurku','🧍'],['Cabeza','Uma','🙂'],['Cabello','Aqcha','💇'],['Cara','Uya','😊'],['Frente','Urku','🧑'],['Ojos','Nawi','👀'],['Nariz','Sinqa','👃'],['Boca','Shimi','👄'],['Orejas','Rinri','👂'],['Dientes','Kiru','🦷'],['Lengua','Qallu','👅'],['Cuello','Kunka','🧣'],['Hombro','Rikra','💪'],['Brazo','Rikra','💪'],['Mano','Maki','✋'],['Dedos',"Ruk’ana",'🖐️'],['Uñas','Shillu','💅'],['Pecho','Qasqu','🫁'],['Espalda','Wasa','🧍'],['Barriga','Wiksa','🧍'],['Ombligo','Puputi','🧍'],['Pierna','Chanka','🦵'],['Pie','Chaki','🦶'],['Sangre','Yawar','🩸'],['Hueso','Tullu','🦴']]},
+{id:'tuberculos',title:'🥔 Tubérculos andinos nativos',items:[
+['Papa','Papa','🥔'],['Oca','Uqa','🟠'],['Olluco','Ulluku','🟤'],['Mashua','Mashwa','🥔'],['Camote','Apichu','🍠'],['Yuca','Rumu','🌱'],['Maca','Maka','🌿'],['Arracacha','Raqacha','🥕'],['Yacón','Yaku suwa','🌱'],['Papa amarga',"Ruk’i papa",'🥔']]},
+{id:'colores',title:'🎨 Colores (Llimpikuna)',items:[
+['Rojo','Puka','🔴'],['Amarillo',"Q’illu",'🟡'],['Verde',"Q’umir",'🟢'],['Blanco','Yuraq','⚪'],['Morado','Kulli','🟣'],['Azul','Anqas','🔵'],['Negro','Yana','⚫'],['Marrón','Kulli','🟤'],['Gris','Chumpi uqi','🩶'],['Rosado','Qamya puka','🩷'],['Anaranjado',"Q’illmu",'🟠'],['Celeste','Yuraq anqas','🩵']]}
+];
+function speak(word){if(!('speechSynthesis' in window)){alert('Este navegador no admite voz automática.');return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='es-PE';u.rate=.78;speechSynthesis.speak(u);}
+function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+function render(){const root=document.getElementById('content');root.innerHTML='';topics.forEach(t=>{const sec=document.createElement('section');sec.className='topic';sec.id=t.id;const h=document.createElement('h2');h.textContent=t.title;sec.appendChild(h);const grid=document.createElement('div');grid.className='cards';t.items.forEach(([es,qu,emoji])=>{const c=document.createElement('article');c.className='card';const e=document.createElement('div');e.className='emoji';e.textContent=emoji;const s=document.createElement('div');s.className='spanish';s.textContent=es;const q=document.createElement('div');q.className='quechua';q.textContent=qu;const b=document.createElement('button');b.className='listen';b.textContent='🔊 Escuchar';b.onclick=()=>speak(qu);c.append(e,s,q,b);grid.appendChild(c)});sec.appendChild(grid);root.appendChild(sec);});}
+function makeQRs(){const base=document.getElementById('siteUrl').value.trim().replace(/\/+$/,'');if(!/^https?:\/\/.+/i.test(base)){alert('Primero pega una dirección pública que empiece con https:// o http://');return;}const grid=document.getElementById('qrGrid');grid.innerHTML='';topics.forEach(t=>{const url=base+'#'+t.id;const card=document.createElement('div');card.className='qr-card';const p=document.createElement('p');p.textContent=t.title;const img=document.createElement('img');img.alt='Código QR '+t.title;img.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(url);const a=document.createElement('a');a.href=img.src;a.download='QR-'+t.id+'.png';a.textContent='Abrir / guardar QR';a.target='_blank';card.append(p,img,document.createElement('br'),a);grid.appendChild(card);});}
+render();
+</script>
+</body>
+</html>
